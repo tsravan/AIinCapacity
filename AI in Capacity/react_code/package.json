@@ -1,0 +1,41 @@
+{
+  "name": "capacity-management",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "axios": "^0.20.0",
+    "cra-template": "1.0.3",
+    "multiselect-react-dropdown": "^1.5.7",
+    "react": "^16.13.1",
+    "react-awesome-modal": "^2.0.5",
+    "react-dom": "^16.13.1",
+    "react-file-download": "^0.3.5",
+    "react-scripts": "3.4.3",
+    "sheetjs": "^2.0.0",
+    "xlsx": "^0.16.6"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

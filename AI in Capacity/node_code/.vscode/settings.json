@@ -1,0 +1,7 @@
+{
+    "appService.zipIgnorePattern": [
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/14631fcc-03cb-4665-93ec-6e89317bfb04/resourceGroups/smarteywebsite1/providers/Microsoft.Web/sites/smarteynode",
+    "appService.deploySubpath": ""
+}
