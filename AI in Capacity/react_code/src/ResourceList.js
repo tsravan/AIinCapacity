@@ -49,7 +49,7 @@ class ResourceList extends Component {
      });
   };
 
-  
+  HandleEmployeeDetailsBack= () => {this.setState({visible: false});};
 
   render() {
     let stateData = this.state.data;
@@ -66,8 +66,11 @@ class ResourceList extends Component {
     //    (<li className="travelcompany-input" key={i}>
     //      <span className="input-label">key: {i} Name: {subjects[keyName]}</span></li>))}
     return (this.state.visible) ? (
+      <>
       <EmployeeDetail nameID={this.state.ResponseNameID} Uid={this.props.ResponseUniqueID} />
-    ) : (
+             <a className="anchorBACKTable" onClick={this.HandleEmployeeDetailsBack}>BACK</a>     
+         </>
+         ) : (
       <>
         {Object.keys(stateData).map((keyName, i) => (
           <div className="table-outer">
@@ -86,7 +89,7 @@ class ResourceList extends Component {
                       Resources
                     </TableCell>
                     <TableCell component="th">Rank</TableCell>
-                    <TableCell component="th" colspan='2'>fitment</TableCell>
+                    <TableCell component="th" colspan='2'>fitment %</TableCell>
                   </TableRow>
                   {stateData[keyName].map((item) => (
                     <TableRow key={item.Request}>

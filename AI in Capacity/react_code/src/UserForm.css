@@ -2,6 +2,7 @@
   box-sizing: border-box;
 }
 .form-outer {
+  position:relative;
   width: 100%;
   height: auto;
   float: left;
@@ -129,6 +130,7 @@ button[type="submit"] {
 }
 
 .table-outer {
+  position:relative;
   width: 100%;
   height: auto;
   float: left;
@@ -315,3 +317,8 @@ table td.no-space th,table td.no-space td{text-align:center;}
 }
 .model-color{color: #000; padding:0 30px 20px}
 .table-outer em{color: #ffee00; cursor:pointer;}
+
+.container .makeStyles-instructions-3 {width:100%;float:left;position:relative;}
+.anchorBACKTable {cursor:pointer;font-family:"Roboto","Helvetica","Arial",sans-serif;border-radius:4px;font-weight:500;line-height:1.75;border-radius:4px;letter-spacing:0.02857em;font-size:0.875rem;text-transform:uppercase;width:71px;height:36px;color:#000;background-color:#b0b0b0;position:absolute;bottom:-44px;left:-15px;right:0;margin:auto;z-index:1;text-align:center;padding:6px 16px;}
+
+.uploadButton {cursor:pointer;font-family:"Roboto","Helvetica","Arial",sans-serif;border-radius:4px;font-weight:500;line-height:1.75;border-radius:4px;letter-spacing:0.02857em;font-size:0.875rem;text-transform:uppercase;width:71px;height:36px;color:#000;background-color:#ffee00;bottom:0;left:0;right:5px;margin-left:10px ;text-align:center;padding:5px 7px;}

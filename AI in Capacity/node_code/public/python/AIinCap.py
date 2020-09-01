@@ -1,30 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Sun Aug 30 02:54:36 2020
-
-@author: Sravan.Tallozu
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Aug 25 00:17:23 2020
-
-@author: Sravan.Tallozu
-"""
-
-# -*- coding: utf-8 -*-
-"""
 Created on Sat Aug 15 23:52:49 2020
-
-https://hdbscan.readthedocs.io/en/latest/comparing_clustering_algorithms.html
-
-Probability of the matching skills for in technical, functional, process, 1 being more matching in the respective areas
-Bench aging No of weeks, make the scale uniform 1 been more bench
-If same location 1 else 0.5
-Experience, make the scale uniform 1 been more exp
-Location, 1 been same location else 0.5
-Rank, make the scale uniform 1 been more Rank1, Rank 5 will be the lowest
-
 
 @author: Sravan.Tallozu
 """
@@ -44,6 +20,7 @@ print('PYTHON STARTED *****************')
 import traceback
 import pandas as pd
 import re    
+import time
 from gensim.models import Word2Vec
 import numpy as np
 import sys
@@ -190,7 +167,7 @@ def main(Id):
                                'Status' : 'P',
                                'Progress': 10}])
     dbconn.close()
-    
+    print('fetching input for request Id: ',Id)
     dbconn,dbcollection = open_dbconn('demandRequest_collection')    
     input_l = list(dbcollection.find({"_id" :ObjectId(Id)}))
     input_l1 = input_l[0].get('appData')
@@ -201,7 +178,7 @@ def main(Id):
         x5 = json.loads(list(input_l1.keys())[0])
         column_names = x5.pop(0)
         input_df = pd.DataFrame(x5, columns=column_names)
-    
+    print(input_df)
     input_df.replace(r'^\s*$', np.nan, regex=True,inplace=True)
     input_df = input_df.mask(input_df.applymap(str).eq('[]'))
     input_df = input_df.dropna(axis=1,how='all')
@@ -251,7 +228,7 @@ def main(Id):
                                         {'Status' : 'P',
                                          'Progress': 25}})
     dbconn.close()
-
+    time.sleep(2)
     req_weights = {}
     req_skills = {}
     req_ip_t = {}
@@ -472,7 +449,8 @@ def main(Id):
     bmodel.to(device)
     bmodel.load_state_dict(torch.load("public/python/finetuned_BERT_epoch_2.model", map_location=torch.device('cpu')))
     
-    result.rename(columns={'Name/ID':'Name_ID'},inplace=True)   
+    result.rename(columns={'Name/ID':'Name_ID'},inplace=True) 
+    result['fitment'] = result['fitment'] * 100
     result.reset_index(drop=True,inplace=True)
     result['Reviews']= None
     for indr,rowr in result.iterrows():
@@ -498,18 +476,18 @@ def main(Id):
             
             ratings = 1
             if preds == 0:
-                ratings=0
+                ratings=1
             elif preds == 1:
-                ratings = 2
+                ratings = 3
             elif preds == 2:
-                ratings = 1
+                ratings = 2
                 
             emp_rev.update({rowe['EngagementName']:ratings})
         reivews_f = []
         for keyr,valuer in emp_rev.items():
             reivews_f.append({"EngagementName": keyr, "Rating":valuer}), 
         result.at[indr,'Reviews'] = reivews_f
-     
+    time.sleep(2) 
     dbconn,dbcollection = open_dbconn('requestQueue_collection')    
     dbcollection.update_many({"_id" : Id},{'$set':
                                         {'Status' : 'P',
@@ -517,11 +495,13 @@ def main(Id):
     dbconn.close()   
     
     print(result)
+    time.sleep(2)
     dbconn,dbcollection = open_dbconn('fitmentResults_collection')
     data_dict = result.to_dict("records")
     dbcollection.insert_many([{"_id" : Id,  
                                'fitmentresults' : data_dict}])
     dbconn.close() 
+    time.sleep(2)
     dbconn,dbcollection = open_dbconn('requestQueue_collection')    
     dbcollection.update_many({"_id" : Id},{'$set':
                                         {'Status' : 'C',
@@ -539,13 +519,22 @@ if len(sys.argv)>1:
 try:
 #    print(type(Id))
 #    print(str(Id))
-    import pickle
-    with open('filename.pickle', 'wb') as handle:
-        pickle.dump(Id, handle, protocol=pickle.HIGHEST_PROTOCOL)
+#    import pickle
+#    with open('filename.pickle', 'wb') as handle:
+#        pickle.dump(Id, handle, protocol=pickle.HIGHEST_PROTOCOL)
     Id1 = json.loads(Id)
     print(Id1)
     main(Id1)
 except Exception as err:
+#    breakpoint()
+    try:
+        time.sleep(2)
+        dbconn,dbcollection = open_dbconn('requestQueue_collection')    
+        dbcollection.update_one({"_id" : Id1},{'$set':
+                                            {'Status' : 'E',
+                                             'Progress': 100}})
+        dbconn.close()
+    except Exception as err:
+        print(err)
     print(traceback.format_exc())
-    
     
